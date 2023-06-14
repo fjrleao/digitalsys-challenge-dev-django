@@ -2,6 +2,7 @@ from rest_framework.views import APIView, Request, Response, status
 
 from .serializers import PersonalLoanSerializer
 from .models import PersonalLoan
+from .tasks import analyse_loan_proposals
 
 from person.serializers import PersonSerializer
 from person.models import Person
@@ -26,9 +27,11 @@ class PersonalLoanProposalView(APIView):
         except:
             person = Person.objects.create(**serializer_person.validated_data)
 
-        PersonalLoan.objects.create(
+        personal_loan = PersonalLoan.objects.create(
             **serializer_loan_value.validated_data, person_id=person.id
         )
+
+        analyse_loan_proposals(personal_loan.id)
 
         return Response(data={
             'message': 'Loan proposal under review'
