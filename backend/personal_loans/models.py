@@ -15,4 +15,4 @@ class PersonalLoan(models.Model):
     person = models.ForeignKey('person.Person', on_delete=models.RESTRICT)
 
     def __str__(self) -> str:
-        return f'{self.person.name} ({self.person.cpf}) - {self.get_status_display()}'
+        return f'{self.person.name} ({self.person.cpf})'
