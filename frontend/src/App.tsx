@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { FieldValues, UseFormReturn, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ToastContainer, toast } from 'react-toastify'
+import axios from 'axios'
+import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
 const schema = z.object({
@@ -23,16 +26,47 @@ function App() {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	}: UseFormReturn<TSchema> = useForm({
 		resolver: zodResolver(schema),
 	})
 
-	function submit(data: FieldValues) {
-		console.log(data)
+	async function submit(data: FieldValues) {
+		try {
+			const response = await axios.post(
+				'http://localhost:8000/personal_loans/proposal/',
+				{ ...data }
+			)
+			toast.success('Proposta enviada com sucesso, aguarde nosso retorno', {
+				position: 'top-right',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+			reset()
+			console.log(response)
+		} catch (error) {
+			toast.error('Erro ao enviar a proposta, tente novamente mais tarde', {
+				position: 'top-right',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+			console.log(error)
+		}
 	}
 
 	return (
 		<main>
+			<ToastContainer />
 			<div className="formContainer">
 				<form onSubmit={handleSubmit(submit)}>
 					<label htmlFor="name">Nome</label>
