@@ -7,7 +7,7 @@ from person.serializers import PersonSerializer
 from person.models import Person
 
 
-class PersonalLoanView(APIView):
+class PersonalLoanProposalView(APIView):
 
     def post(self, request: Request) -> Response:
         serializer_person = PersonSerializer(data=request.data)
