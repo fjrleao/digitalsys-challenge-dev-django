@@ -31,7 +31,7 @@ class PersonalLoanProposalView(APIView):
             **serializer_loan_value.validated_data, person_id=person.id
         )
 
-        analyse_loan_proposals(personal_loan.id)
+        analyse_loan_proposals.delay(personal_loan.id)
 
         return Response(data={
             'message': 'Loan proposal under review'
