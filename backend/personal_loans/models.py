@@ -1,10 +1,12 @@
 from django.db import models
 
+
 LOAN_STATUS = {
     ('AV', 'EM AVALIAÇÃO'),
     ('ND', 'NEGADA'),
     ('AP', 'APROVADA')
 }
+
 
 class PersonalLoan(models.Model):
     value = models.DecimalField(max_digits=10, decimal_places=2)
