@@ -14,6 +14,20 @@ services:
     build: ./backend
     ports:
       - 8000:8000
+    volumes:
+      - ./backend:/app
+    entrypoint: ['sh', '/app/docker-entrypoint.sh']
+    depends_on:
+      - rabbitmq
+
+  worker:
+    container_name: celery_worker
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    command: celery -A project worker
+    depends_on:
+      - backend
 
   rabbitmq:
     image: rabbitmq:3.12-management
