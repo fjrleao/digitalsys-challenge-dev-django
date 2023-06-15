@@ -129,4 +129,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'amqp://localhost:5672//'
+CELERY_BROKER_URL = 'amqp://rabbitmq:5672//'

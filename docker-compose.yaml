@@ -6,3 +6,18 @@ services:
     build: ./frontend
     ports:
       - 5173:5173
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend_django
+    build: ./backend
+    ports:
+      - 8000:8000
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
