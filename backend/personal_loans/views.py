@@ -20,6 +20,7 @@ class PersonalLoanProposalView(APIView):
         if not serializer_loan_value.is_valid():
             return Response(serializer_loan_value.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        ## Bloco try/catch para procurar os dados de uma pessoa, caso ela não tenha cadastro, o cadastro será criado.
         try:
             person = Person.objects.get(
                 cpf=serializer_person.validated_data['cpf']
