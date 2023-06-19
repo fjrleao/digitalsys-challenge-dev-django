@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: frontend_react
+    build: ./frontend
+    environment:
+      - VITE_API_URL=http://localhost:8000/
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend_django
+    build: ./backend
+    environment:
+      - CELERY_BROKER_URL=amqp://rabbitmq:5672//
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend:/app
+    entrypoint: ['sh', '/app/docker-entrypoint.sh']
+    depends_on:
+      - rabbitmq
+
+  worker:
+    container_name: celery_worker
+    build: ./backend
+    environment:
+      - CELERY_BROKER_URL=amqp://rabbitmq:5672//
+    volumes:
+      - ./backend:/app
+    command: celery -A project worker
+    depends_on:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
