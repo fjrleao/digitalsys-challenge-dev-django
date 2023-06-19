@@ -34,7 +34,7 @@ function App() {
 	async function submit(data: FieldValues) {
 		try {
 			const response = await axios.post(
-				'http://localhost:8000/personal_loans/proposal/',
+				`${import.meta.env.VITE_API_URL}personal_loans/proposal/`,
 				{ ...data }
 			)
 			toast.success('Proposta enviada com sucesso, aguarde nosso retorno', {
